@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.modelmapper.ModelMapper;
@@ -46,6 +47,12 @@ public class GreetingService implements IGreetingService {
 	public Greeting updateMessage(long id) {
 		String message = "Hello Kiran Its updated message";
 		return greetingRepository.save(new Greeting(id, message));
+	}
+
+	@Override
+	public void deleteMessage(long id) {
+		greetingRepository.deleteById(id);
+		
 	}
 
 	
