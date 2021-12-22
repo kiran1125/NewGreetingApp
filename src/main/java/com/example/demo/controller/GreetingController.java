@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +26,7 @@ public class GreetingController {
     
     
     @GetMapping(value={"/","","/home"})
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+    public Greeting greeting(@RequestParam(value = "name") String name) {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
     @Autowired
@@ -35,12 +38,25 @@ public class GreetingController {
     }
 	
     @GetMapping("/post")
-    public Greeting greetingMessage(@RequestParam (value = "name" , defaultValue = "World") String name) {
+    public Greeting greetingMessage(@RequestParam (value = "firstName") String firstName ,@RequestParam (value = "lastName") String lastName) {
     	User user = new User();
-    	user.setFirstName(name);
+    	user.setFirstName(firstName);
+    	user.setLastName(lastName);
         return greetingService.addGreeting(user);
     }
+    @GetMapping("/get/{id}")
+	public Greeting findById(@PathVariable String id) {
+		return greetingService.findById(Long.parseLong(id));
+	}
+    @GetMapping("/getAll")
+	public List<Greeting> getAllGreetings(){
+		return greetingService.getAllMessages();
+	}
     
+    @PutMapping("/update/{id}")
+	public Greeting updateMessage(@PathVariable String id) {
+		return greetingService.updateMessage(Long.parseLong(id));
+	}
 
     
 }
