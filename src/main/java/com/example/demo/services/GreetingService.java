@@ -3,16 +3,21 @@ package com.example.demo.services;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.data.UserData;
 import com.example.demo.model.Greeting;
 import com.example.demo.model.User;
+import com.example.demo.repository.GreetingRepository;
 
 @Service
 public class GreetingService implements IGreetingService {
 	private static final String template = "Hello world";
 	private final AtomicLong counter = new AtomicLong();
+	
+	@Autowired
+	private GreetingRepository greetingRepository;
 
 	@Override
 	public Greeting greetingMessage() {
@@ -20,11 +25,9 @@ public class GreetingService implements IGreetingService {
 	}
 
 	@Override
-	public String greetingMessageByName(UserData userData) {
-		User user = new User();
-		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.map(userData, user);
-		return ("Hello " + user.getFirstName() + " " + user.getLastName());
+	public Greeting addGreeting(User user) {
+		String message = String.format(template,(user.toString().isEmpty() ? "Hello World" : user.toString()));
+		return greetingRepository.save(new Greeting(counter.incrementAndGet(),message));
 	}
 
 	

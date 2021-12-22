@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.data.UserData;
 import com.example.demo.model.Greeting;
+import com.example.demo.model.User;
 import com.example.demo.services.IGreetingService;
 
 @RestController
@@ -33,8 +34,13 @@ public class GreetingController {
     	return greetingService.greetingMessage();
     }
 	
-    @PostMapping("/post")
-    public String greetingMessage(@RequestBody UserData userData) {
-        return greetingService.greetingMessageByName(userData);
-        }
+    @GetMapping("/post")
+    public Greeting greetingMessage(@RequestParam (value = "name" , defaultValue = "World") String name) {
+    	User user = new User();
+    	user.setFirstName(name);
+        return greetingService.addGreeting(user);
+    }
+    
+
+    
 }

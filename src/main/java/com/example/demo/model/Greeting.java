@@ -1,6 +1,13 @@
 package com.example.demo.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Greetings")
 public class Greeting {
+	@Id
 	private long id;
     private String content;
     public long getId() {
@@ -18,5 +25,8 @@ public class Greeting {
     public Greeting(long id, String content) {
         this.id = id;
         this.content = content;
+    }
+    public Greeting() {
+    	
     }
 }
